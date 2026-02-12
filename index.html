@@ -83,6 +83,25 @@
         </div>
     </footer>
 
+    <div class="terminal-overlay" id="terminal-window">
+        <div class="terminal-content">
+            <div class="terminal-header">
+                <span class="status-dot"></span>
+                <span class="terminal-title">F-646 // 旅者通讯终端</span>
+                <button class="close-terminal" id="close-terminal">×</button>
+            </div>
+            <div class="terminal-body" id="terminal-output">
+                <div class="msg system">>> 正在连接至F-646...</div>
+                <div class="msg system">>> 点阵视域同步中...</div>
+                <div class="msg bot">...早安。我是Neumann。你也在寻找古文明的痕迹吗？</div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">></span>
+                <input type="text" id="user-input" placeholder="输入讯息..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
     <script src="./main.js"></script>
 </body>
 

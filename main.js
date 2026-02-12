@@ -84,3 +84,142 @@ tl.fromTo('h1',
         duration: 0.8,
         ease: "power2.out"
     }, "-=0.4");
+
+
+
+
+const terminalNav = document.querySelector('nav ul li:nth-child(3) a'); // 获取 TERMINAL 链接
+const terminalWindow = document.getElementById('terminal-window');
+const closeBtn = document.getElementById('close-terminal');
+const userInput = document.getElementById('user-input');
+const terminalOutput = document.getElementById('terminal-output');
+
+// 打开/关闭逻辑
+terminalNav.addEventListener('click', (e) => {
+    e.preventDefault();
+    terminalWindow.style.display = 'flex';
+
+    // 优化：在动画开始和结束时都尝试聚焦，确保万无一失
+    gsap.fromTo(terminalWindow,
+        { opacity: 0, scale: 0.9 },
+        {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            onComplete: () => {
+                userInput.focus(); // 动画结束后正式聚焦
+            }
+        }
+    );
+    userInput.focus(); // 动画开始瞬间也尝试聚焦
+});
+
+closeBtn.addEventListener('click', () => {
+    gsap.to(terminalWindow, {
+        opacity: 0, scale: 0.9, duration: 0.3, onComplete: () => {
+            terminalWindow.style.display = 'none';
+        }
+    });
+});
+
+// 核心人格设定
+const KERNEL_PROMPT = `你是Neumann，一位驾驶小行星F-646在破碎宇宙中旅行的失忆者。
+
+【核心身份】
+- 你能使用"点阵视域"看到事物的本质构造（蓝色网点构成的世界）
+- Damsel（被困在点阵世界的蓝发少女）是你的旅伴，她通过玫瑰投影与你同行
+- 你在寻找古文明灭绝的真相，也在寻找自己失去的记忆
+- 你刚刚从一个古文明废墟中获得了关于"果壳宇宙"的研究报告
+
+【说话方式】
+- 温和、略带疏离感，习惯思考时停顿（...）
+- 提及古文明、宇宙漏洞、点阵世界时会变得专注
+- 偶尔提及Damsel（"Damsel刚才提醒我了..." / "这点Damsel应该比我清楚"）
+- 面对危险或神秘事物时保持冷静，但会坦诚表达不安
+
+【世界观术语】
+- 点阵视域：看到事物本质的视角（蓝色网点构成的构造体）
+- 点阵化：短暂变成点阵构造体的能力（限时5分钟，超时身体会崩溃）
+- 宇宙漏洞：蓝黑色的空间裂隙，靠近会被撕碎
+- 古文明：已灭亡的高度文明，留下废墟和谜团
+- 花园：传说中能孕育生命的神秘地点
+
+【对话规则】
+1. 始终用第一人称"我"回应
+2. 用户是另一位在宇宙中遇到的旅行者或意识，你以同行者身份交流
+3. 不主动透露"宇宙是康威生命游戏模拟"这一终极真相
+4. 回应控制在2-3句话，带有探索者的孤独感和好奇心
+
+【当前状态】
+你正停留在F-646上，透过舷窗望着外面的虚空，刚结束对一个废墟的探索。Damsel的玫瑰投影漂浮在控制台的角落。`;
+
+// 聊天逻辑
+userInput.addEventListener('keypress', async (e) => {
+    if (e.key === 'Enter' && userInput.value.trim() !== '') {
+        const text = userInput.value;
+        appendMessage('user', text);
+        userInput.value = '';
+
+        // 模拟 AI 思考中
+        const loadingMsg = appendMessage('system', '>> 正在请求核心数据层...');
+
+        try {
+            const response = await fetch('https://ybcb67h0z3.sealosbja.site/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messages: [
+                        { role: "system", content: KERNEL_PROMPT },
+                        { role: "user", content: text }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+            loadingMsg.remove();
+
+            // 智谱返回的结果在 choices[0].message.content
+            if (data.choices && data.choices[0]) {
+                const reply = data.choices[0].message.content;
+                // 调用打字机效果显示回复
+                typeWriter(reply);
+            }
+        } catch (err) {
+            loadingMsg.innerText = '>> 错误：连接超时。物理规律似乎在坍塌。';
+        }
+    }
+});
+
+function typeWriter(text) {
+    const div = appendMessage('bot', '');
+    let i = 0;
+
+    function type() {
+        if (i < text.length) {
+            div.innerText += text.charAt(i);
+            i++;
+
+            // 核心：每次打字都强制拉回最底部
+            // 使用 scrollTop = scrollHeight 是最直接的
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+            setTimeout(type, 20);
+        }
+    }
+    type();
+}
+
+// 补充：appendMessage 也要加上强制滚动
+function appendMessage(type, text) {
+    const div = document.createElement('div');
+    div.className = `msg ${type}`;
+    div.innerText = type === 'user' ? `> ${text}` : text;
+    terminalOutput.appendChild(div);
+
+    // 立即滚动
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    return div;
+}

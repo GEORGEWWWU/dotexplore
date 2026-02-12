@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 :root {
     --c-black: #000000;
     --c-white: #FFFFFF;
@@ -504,4 +508,129 @@ h1:hover .outline {
         gap: 10px;
         text-align: center;
     }
+}
+
+
+
+
+/* --- Terminal UI --- */
+.terminal-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 450px;
+    /* 固定高度 */
+    background: rgba(0, 5, 10, 0.95);
+    border: 1px solid var(--c-blue);
+    display: none;
+    flex-direction: column;
+    /* 垂直排版：头、身、脚 */
+    overflow: hidden;
+    /* 严禁窗口自己长高 */
+    z-index: 1000;
+}
+
+.terminal-header {
+    flex-shrink: 0;
+    /* 头部严禁压缩 */
+    height: 40px;
+    padding: 10px 15px;
+    background: rgba(0, 242, 255, 0.1);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff3e3e;
+    /* 红色警告感 */
+    border-radius: 50%;
+    box-shadow: 0 0 5px #ff3e3e;
+}
+
+.terminal-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--c-blue);
+    flex-grow: 1;
+}
+
+.close-terminal {
+    background: none;
+    border: none;
+    color: var(--c-white);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.terminal-body {
+    flex: 1;
+    /* 自动占据剩余空间 */
+    min-height: 0;
+    max-height: 350px;
+    /* 极其关键：强制内容在父级约束内计算，不撑开父级 */
+    overflow-y: auto;
+    /* 消息多了自动出滚动条 */
+    padding: 20px;
+}
+
+/* 3. 防止长 Token 撑爆：强制换行 */
+.msg {
+    word-wrap: break-word;
+    word-break: break-all;
+    /* 强制切断超长字符串 */
+    white-space: pre-wrap;
+    margin-bottom: 12px;
+    width: 100%;
+    /* 限制宽度 */
+}
+
+.msg.system {
+    color: #666;
+    font-size: 11px;
+}
+
+.msg.bot {
+    color: var(--c-blue);
+    margin-bottom: 10px;
+}
+
+.msg.user {
+    color: var(--c-white);
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.terminal-input-line {
+    flex-shrink: 0;
+    /* 禁止被压缩 */
+    height: 50px;
+    /* 给一个死高度 */
+    padding: 0 15px;
+    background: rgba(0, 242, 255, 0.05);
+    border-top: 1px solid rgba(0, 242, 255, 0.2);
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.prompt {
+    color: var(--c-blue);
+    font-weight: bold;
+}
+
+#user-input {
+    background: none;
+    border: none;
+    color: var(--c-white);
+    outline: none;
+    flex-grow: 1;
+    font-family: 'Courier New', monospace;
 }
