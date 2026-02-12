@@ -4,7 +4,7 @@
 **"宇宙是一场游戏，一场生命的游戏。"**
 
 [![GameJam](https://img.shields.io/badge/GameJam-2026-blue)](https://gmhub.com/jams/ugoa2026)
-[![Platform](https://img.shields.io/badge/Platform-PC%2FWeb-black)](预留官网链接)
+[![Platform](https://img.shields.io/badge/Platform-PC%2FWeb-black)](https://georgewwwu.github.io/dotexplore/)
 [![Genre](https://img.shields.io/badge/Genre-叙事解谜%20|%20宇宙探索-cyan)](DOT%20宇宙探索)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://mit-license.org/)
 
@@ -109,7 +109,7 @@
 
 ## 🔗 相关链接
 
-- 🌐 **官方网站**: [https://](https://)
+- 🌐 **官方网站**: [https://georgewwwu.github.io/dotexplore/](https://georgewwwu.github.io/dotexplore/)
 - 💻 **源码仓库**: [https://github.com/GEORGEWWWU/dotexplore](https://github.com/GEORGEWWWU/dotexplore)
 
 ## 👨‍💻 开发团队
