@@ -1,0 +1,436 @@
+/* --- 1. 原有定义保持不变 --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --c-black: #000000;
+    --c-white: #FFFFFF;
+    --c-blue: #00f2ff;
+    --c-blue-dark: #0044ff;
+    --font-main: 'Helvetica Neue', Arial, 'PingFang SC', sans-serif;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    background-color: var(--c-black);
+    font-family: var(--font-main);
+    overflow: hidden;
+    color: var(--c-white);
+}
+
+/* --- 【新增】底层铺底图片样式 --- */
+.bg-underlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* 放在最底层 */
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bg-underlay img {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 0.25;
+    /* 淡化处理 */
+    filter: grayscale(1) contrast(1.2);
+    /* 去色，保持黑白调性 */
+    /* 修正：让遮罩的起始点从 -5% 开始，确保最底部 100% 显示 */
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) -5%, rgba(0, 0, 0, 0) 70%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) -5%, rgba(0, 0, 0, 0) 70%);
+    transform: scale(1.1) translateY(1%);
+    /* 为视差预留缩放空间 */
+}
+
+/* --- 2. 其他层级确保 z-index 正确 --- */
+header {
+    z-index: 100;
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.logo span {
+    color: var(--c-blue);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    /* 必须开启相对定位 */
+    padding: 6px 0;
+    transition: color 0.3s ease;
+}
+
+/* 悬停变色 */
+nav a:hover {
+    color: var(--c-blue);
+}
+
+/* 动态下划线核心样式 */
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    /* 细线更高级 */
+    background: var(--c-blue);
+    /* 渐变色可以让它看起来更有能量感 */
+    background: linear-gradient(90deg, transparent, var(--c-blue), transparent);
+
+    transform: scaleX(0);
+    transform-origin: right;
+    /* 默认从右侧缩回 */
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 悬停时，下划线展开 */
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    /* 展开时从左侧开始 */
+}
+
+.character-container {
+    position: absolute;
+    bottom: -5%;
+    left: 5%;
+    width: 45vw;
+    height: 95vh;
+    z-index: 10;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.char-main {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+    will-change: transform;
+    /* 解决闪现问题的关键 */
+}
+
+.char-shadow {
+    position: absolute;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+
+    /* --- 核心修复 --- */
+    left: 0;
+    /* 初始位置与人物重合 */
+    bottom: 0;
+    opacity: 0.4;
+    /* 透明度按需调整 */
+    filter: blur(4px);
+    /* 仅保留轻微模糊，不再强制变黑 */
+
+    will-change: transform;
+    /* 解决闪现问题的硬件加速开关 */
+    pointer-events: none;
+}
+
+/* 1. 调整球体颜色为深色，去掉透明度和滤镜 */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    /* 必须是1，否则边缘会糊 */
+    filter: none;
+    /* 禁用单个球体的滤镜 */
+}
+
+/* 2. 直接修改背景色为深色调（低明度） */
+.blob-1 {
+    background: #08adb6;
+    width: 500px;
+    height: 500px;
+    left: 20%;
+    top: 30%;
+}
+
+.blob-2 {
+    background: #0d3ccc;
+    width: 400px;
+    height: 400px;
+    right: 20%;
+    top: 40%;
+}
+
+.blob-3 {
+    background: #d1d1d1;
+    width: 350px;
+    height: 350px;
+    left: 50%;
+    bottom: 10%;
+}
+
+.blob-4 {
+    background: #0bd6ec;
+    width: 250px;
+    height: 250px;
+    right: 40%;
+    top: 10%;
+}
+
+/* 在容器层统一控制透明度（低透明度） */
+.liquid-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    filter: url('#gooey-high-res');
+    opacity: 0.88;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 20;
+    height: 100%;
+    width: 100%;
+    /* 将 padding-left 从 55vw 减小到 50%，或者使用 flex 布局控制 */
+    padding-left: 50vw;
+    padding-right: 5vw;
+    /* 增加右边距，防止贴边 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+    overflow: hidden;
+    /* 强制切断可能的溢出 */
+}
+
+.title-wrapper {
+    position: relative;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    color: var(--c-blue);
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    /* 增加代码感 */
+}
+
+/* 标题前面的小扫射线 */
+.scanner-line {
+    width: 30px;
+    height: 2px;
+    background: var(--c-blue);
+    display: inline-block;
+    box-shadow: 0 0 10px var(--c-blue);
+}
+
+.main-title-box {
+    position: relative;
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 7.5vw;
+    font-weight: 900;
+    line-height: 0.85;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    position: relative;
+    color: var(--c-white);
+
+    /* 核心修正：初始设为 0，防止跑出屏幕 */
+    opacity: 0;
+    transform: none;
+}
+
+/* 镂空字体设计 */
+h1 .outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.45);
+    color: transparent;
+    transition: 0.5s;
+}
+
+h1:hover .outline {
+    -webkit-text-stroke: 1px var(--c-blue);
+}
+
+.dot-accent {
+    color: var(--c-blue);
+    text-shadow: 0 0 20px var(--c-blue);
+}
+
+/* 装饰性坐标和线条 */
+.deco-elements {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.coord {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1px;
+}
+
+.line-x {
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
+}
+
+/* 按钮核心样式：硬核科技风 */
+.cta-btn {
+    position: relative;
+    padding: 15px 35px;
+    background: transparent;
+    border: 1px solid var(--c-blue);
+    color: var(--c-blue);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    z-index: 5;
+    pointer-events: auto;
+    /* 必须开启，否则无法点击 */
+
+    /* 配合 GSAP 动画的初始状态 */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 悬停时的发光和反色效果 */
+.cta-btn:hover {
+    background: var(--c-blue);
+    color: var(--c-black);
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+}
+
+/* 按钮内部的装饰性小角 */
+.cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid var(--c-white);
+    border-left: 2px solid var(--c-white);
+}
+
+/* 按钮扫光特效 */
+.btn-glitch {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent);
+    transition: 0.5s;
+}
+
+.cta-btn:hover .btn-glitch {
+    left: 100%;
+}
+
+/* 闪烁动画 */
+.flicker {
+    animation: textFlicker 4s infinite;
+}
+
+@keyframes textFlicker {
+
+    0%,
+    90%,
+    100% {
+        opacity: 1;
+    }
+
+    92% {
+        opacity: 0.5;
+    }
+
+    94% {
+        opacity: 0.8;
+    }
+
+    96% {
+        opacity: 0.2;
+    }
+}
+
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.svg-filters {
+    position: absolute;
+    visibility: hidden;
+}

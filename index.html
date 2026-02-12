@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOT 宇宙探索 | UNIVERSE IS A GAME</title>
+    <script src="./libs/gsap.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="bg-underlay">
+        <img src="/assets/backfix.avif" id="parallax-bg">
+    </div>
+
+    <svg class="svg-filters">
+        <defs>
+            <filter id="gooey-high-res">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
+                    result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+
+    <header>
+        <div class="logo">DOT <span>宇宙探索</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">世界观</a></li>
+                <li><a href="#">探索</a></li>
+                <li><a href="#">TERMINAL</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="character-container">
+        <img src="/assets/smile.png" class="char-shadow" id="char-shadow">
+        <img src="/assets/smile.png" class="char-main" id="char-main">
+    </div>
+
+    <div class="liquid-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <div class="grid-overlay"></div>
+
+    <main class="hero-content">
+        <div class="title-wrapper">
+            <p class="subtitle">
+                <span class="scanner-line"></span>
+                UNIVERSE IS A GAME // 宇宙是一场生命的游戏
+            </p>
+            <div class="main-title-box">
+                <h1 data-text="DOT.REALITY">
+                    <span class="flicker">DOT</span>
+                    <span class="dot-accent">.</span><br>
+                    <span class="outline">ESSENCE</span>
+                </h1>
+                <div class="deco-elements">
+                    <span class="coord">SECTOR: F-646</span>
+                    <span class="line-x"></span>
+                </div>
+            </div>
+            <button class="cta-btn">
+                <span class="btn-glitch"></span>
+                寻找现实的入口
+            </button>
+        </div>
+    </main>
+
+    <script src="./main.js"></script>
+</body>
+
+</html>
