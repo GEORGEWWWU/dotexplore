@@ -75,6 +75,12 @@ tl.fromTo('h1',
     .to('.cta-btn', {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.6,
         ease: "back.out(1.7)" // 增加一个回弹效果，更有动感
-    }, "-=0.6");
+    }, "-=0.6")
+    .from('.site-footer', {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: "power2.out"
+    }, "-=0.4");

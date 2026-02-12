@@ -5,7 +5,7 @@
 
 [![GameJam](https://img.shields.io/badge/GameJam-2026-blue)](https://gmhub.com/jams/ugoa2026)
 [![Platform](https://img.shields.io/badge/Platform-PC%2FWeb-black)](预留官网链接)
-[![Genre](https://img.shields.io/badge/Genre-叙事解谜%20|%20宇宙探索-cyan)](预留官网链接)
+[![Genre](https://img.shields.io/badge/Genre-叙事解谜%20|%20宇宙探索-cyan)](DOT%20宇宙探索)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://mit-license.org/)
 
 ---

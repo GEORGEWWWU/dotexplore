@@ -434,3 +434,74 @@ h1:hover .outline {
     position: absolute;
     visibility: hidden;
 }
+
+
+/* --- Footer 样式 --- */
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    mix-blend-mode: difference;
+    /* 确保在亮色球体经过时文字可见 */
+}
+
+.footer-item {
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: var(--c-white);
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.footer-item a {
+    text-decoration: none;
+    color: var(--c-white);
+    position: relative;
+    padding-bottom: 4px;
+    transition: color 0.3s ease;
+}
+
+/* 这里的下划线动画与导航栏保持一致 */
+.footer-item a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--c-blue);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-item a:hover {
+    color: var(--c-blue);
+}
+
+.footer-item a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.copyright {
+    opacity: 0.6;
+    /* 版权信息稍微弱化 */
+}
+
+/* 适配移动端 */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 20px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
