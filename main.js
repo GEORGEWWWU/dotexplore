@@ -13,6 +13,31 @@ gsap.to("#parallax-bg", {
     ease: "sine.inOut"
 });
 
+// 获取系统时间并判断早晚
+function getGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    
+    if (hour >= 5 && hour < 12) {
+        return "早安";
+    } else if (hour >= 12 && hour < 18) {
+        return "午安";
+    } else if (hour >= 18 && hour < 22) {
+        return "晚上好";
+    } else {
+        return "晚安";
+    }
+}
+
+// 页面加载时更新问候消息
+document.addEventListener('DOMContentLoaded', function() {
+    const greetingElement = document.getElementById('greeting-message');
+    if (greetingElement) {
+        const greeting = getGreeting();
+        greetingElement.textContent = `...${greeting}。我是Neumann。你也在寻找古文明的痕迹吗？`;
+    }
+});
+
 const charTL = gsap.timeline({ repeat: -1, yoyo: true });
 charTL.to("#char-main", {
     y: -15,
