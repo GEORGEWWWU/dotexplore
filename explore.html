@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>探索指南 | DOT 宇宙探索</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>探索 | DOT 宇宙探索</title>
     <script src="./libs/gsap.min.js"></script>
     <link rel="stylesheet" href="./style.css">
+    <link rel="short icon" href="./assets/DOT 宇宙探索 - LOGO.png">
     <style>
         /* --- 核心修复：强制重置所有可能导致截断的高度限制 --- */
         html,
@@ -55,6 +57,13 @@
             align-items: flex-start;
             /* 为右侧固定边栏留出空间 */
             margin-right: 400px;
+        }
+
+        /* 移动端修复 */
+        @media (max-width: 900px) {
+            .explore-content-grid {
+                margin-right: 0;
+            }
         }
 
         /* 左侧内容区：严禁使用 overflow:hidden */
@@ -150,15 +159,65 @@
         @media (max-width: 900px) {
             .explore-content-grid {
                 flex-direction: column;
-                margin-right: 0;
+                align-items: center;
+                padding: 0 20px;
+                /* 增加边距防止贴边 */
             }
 
             .sticky-sidebar {
-                position: relative;
-                top: 0;
-                right: 0;
+                display: none;
+            }
+
+            .mechanic-list {
                 width: 100%;
-                max-height: none;
+                /* 填满容器 */
+                margin-left: 0 !important;
+            }
+
+            .mechanic-card {
+                padding: 25px;
+                min-height: 150px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                letter-spacing: 1px;
+                text-align: center;
+                margin-bottom: 15px;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* 超小屏幕适配 */
+        @media (max-width: 480px) {
+            .explore-scroll-area {
+                padding: 100px 0 80px 0;
+            }
+
+            .mechanic-list {
+                gap: 15px;
+            }
+
+            .mechanic-card {
+                padding: 20px;
+                min-height: 120px;
+            }
+
+            .subtitle {
+                font-size: 11px;
+                margin-bottom: 12px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            .sticky-sidebar {
+                padding: 20px;
             }
         }
     </style>

@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>世界观 | DOT 宇宙探索</title>
     <script src="./libs/gsap.min.js"></script>
     <link rel="stylesheet" href="./style.css">
+    <link rel="short icon" href="./assets/DOT 宇宙探索 - LOGO.png">
     <style>
         /* --- 核心修复：强制重置所有可能导致截断的高度限制 --- */
         html,
@@ -50,7 +52,9 @@
         .worldview-content-grid {
             width: 90%;
             display: grid;
+            justify-content: center;
             justify-items: center;
+            margin: 0 auto;
         }
 
         .worldview-content {
@@ -177,6 +181,67 @@
         @media (max-width: 900px) {
             .worldview-content {
                 width: 95%;
+            }
+
+            .world-section {
+                padding: 25px;
+                margin-bottom: 25px;
+            }
+
+            .char-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .subtitle {
+                display: none;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+
+            .quote-box {
+                padding-left: 20px;
+                margin: 20px 0;
+            }
+
+            .quote-box p {
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+        }
+
+        /* 超小屏幕适配 */
+        @media (max-width: 480px) {
+            .worldview-content {
+                width: 98%;
+                padding: 0 10px;
+            }
+
+            .world-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .subtitle {
+                font-size: 11px;
+                margin-bottom: 12px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            .quote-box {
+                padding-left: 15px;
+                margin: 15px 0;
+            }
+
+            .quote-box p {
+                font-size: 1.1rem;
+                line-height: 1.5;
             }
         }
     </style>
