@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>世界观 | DOT 宇宙探索</title>
+    <script src="./libs/gsap.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* --- 核心修复：强制重置所有可能导致截断的高度限制 --- */
+        html,
+        body {
+            height: auto !important;
+            /* 允许页面高度随内容伸展 */
+            overflow-y: auto !important;
+            /* 强制开启纵向滚动条 */
+            overflow-x: hidden;
+            background-color: #000;
+        }
+
+        /* 确保背景层不随页面滚动，且不挡住内容 */
+        .bg-underlay,
+        .grid-overlay {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- 建立一个新的、没有高度限制的容器 --- */
+        .worldview-scroll-area {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            /* 使用auto高度让内容自然展开 */
+            height: auto;
+            display: flex;
+            justify-content: center;
+            padding: 120px 0 100px 0;
+            /* 留出页头页尾空间 */
+            /* 确保内容不被截断 */
+            overflow: visible;
+            /* 确保内容在最上层，不被背景覆盖 */
+            background: transparent;
+        }
+
+        .worldview-content-grid {
+            width: 90%;
+            display: grid;
+            justify-items: center;
+        }
+
+        .worldview-content {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .world-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 40px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            /* 确保元素不会因为布局坍塌而不可见 */
+            min-height: 200px;
+            /* 强制设置初始透明度为1，确保所有卡片都可见 */
+            opacity: 1 !important;
+            /* 确保元素不会被遮挡 */
+            position: relative;
+            z-index: 1;
+        }
+
+        .world-section:hover {
+            background: rgba(0, 242, 255, 0.08);
+            border-color: var(--c-blue);
+            transform: translateX(10px);
+        }
+
+        /* 修饰样式 */
+        .subtitle {
+            color: #00f2ff !important;
+            font-size: 14px !important;
+            letter-spacing: 3px !important;
+            margin-bottom: 30px !important;
+            position: relative !important;
+            padding-left: 20px !important;
+            font-weight: 300 !important;
+            text-transform: uppercase !important;
+            z-index: 10 !important;
+        }
+
+        .scanner-line {
+            position: absolute !important;
+            left: 0 !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: 12px !important;
+            height: 1px !important;
+            background: #00f2ff !important;
+            box-shadow: 0 0 10px #00f2ff !important;
+        }
+
+        h3 {
+            color: var(--c-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .key-hint {
+            border: 1px solid var(--c-blue);
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .quote-box {
+            border-left: 2px solid var(--c-blue);
+            padding-left: 30px;
+            margin: 40px 0;
+        }
+
+        .quote-box p {
+            font-size: 1.5rem;
+            line-height: 2;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .char-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .char-card:hover {
+            border-color: var(--c-blue);
+            background: rgba(0, 242, 255, 0.05);
+        }
+
+        .char-name {
+            color: var(--c-blue);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .concept-tag {
+            font-family: 'Courier New';
+            font-size: 10px;
+            color: #666;
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 900px) {
+            .worldview-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-underlay">
+        <img src="assets/backfix.avif" style="opacity: 0.15;">
+    </div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <div class="logo">DOT <span>WORLDVIEW</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="worldview.html" style="color:var(--c-blue)">世界观</a></li>
+                <li><a href="explore.html">探索</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="worldview-scroll-area">
+        <div class="worldview-content-grid">
+
+            <div class="world-section-list">
+                <p class="subtitle"><span class="scanner-line"></span> ORIGIN // 起源</p>
+
+                <div class="world-section">
+                    <h3><span class="key-hint">01</span> 宇宙棋盘</h3>
+                    <div class="quote-box">
+                        <p>宇宙是棋盘，是无限宽广的网格地板 [cite: 1]。</p>
+                        <p>生命是棋子，是网格中的一个无限渺小的点 [cite: 1]。</p>
+                        <p>文明是一场棋局，是无限多的点结成的图形 [cite: 1]。</p>
+                    </div>
+                    <p style="color:rgba(255,255,255,0.6); line-height:1.8">
+                        这是一个被按下暂停键的、由康威生命游戏模型模拟的微小宇宙。在久远的过去，人类与名为Conway的朋友共同构建了它。
+                        如今，它已是千疮百孔的模样，古文明的废墟在虚空中到处乱飘 [cite: 2, 4]。
+                    </p>
+                </div>
+
+                <div class="world-section">
+                    <h3><span class="key-hint">02</span> 旅者档案</h3>
+                    <div class="char-grid">
+                        <div class="char-card">
+                            <div class="char-name">Neumann (诺依曼)</div>
+                            <p>驾驶小行星F-646在破碎宇宙中旅行的失忆者。他能通过"点阵视域"洞察事物的本质，正在寻找灭绝的真相 [cite: 1, 2]。</p>
+                            <span class="concept-tag">STATUS: ACTIVE // IDENTITY: BUILDER?</span>
+                        </div>
+                        <div class="char-card">
+                            <div class="char-name">Damsel (少女)</div>
+                            <p>只存在于点阵世界中的少女。以幽蓝色玫瑰投影的形式出现在现实中，是Neumann寻找现实出口的指引者 [cite: 1]。</p>
+                            <span class="concept-tag">STATUS: PROJECTED // ENTITY: DOT-MATRIX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="world-section">
+                    <h3><span class="key-hint">03</span> 破碎法则</h3>
+                    <p style="color:rgba(255,255,255,0.6); line-height:1.8">
+                        在这个暂停的宇宙中，物理定律开始崩坏。空间结构出现裂缝，时间流动变得不稳定。只有掌握点阵化技术的人才能在这种环境中生存。
+                        宇宙漏洞如同黑洞般吞噬一切，而点阵视域则是唯一的导航工具。
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 入场动画
+        gsap.from(".world-section", {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            // 确保动画完成后元素完全可见
+            onComplete: function () {
+                gsap.set(".world-section", { opacity: 1 });
+            }
+        });
+    </script>
+</body>
+
+</html>

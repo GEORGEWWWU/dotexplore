@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>探索指南 | DOT 宇宙探索</title>
+    <script src="./libs/gsap.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* --- 核心修复：强制重置所有可能导致截断的高度限制 --- */
+        html,
+        body {
+            height: auto !important;
+            /* 允许页面高度随内容伸展 */
+            overflow-y: auto !important;
+            /* 强制开启纵向滚动条 */
+            overflow-x: hidden;
+            background-color: #000;
+        }
+
+        /* 确保背景层不随页面滚动，且不挡住内容 */
+        .bg-underlay,
+        .grid-overlay {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- 建立一个新的、没有高度限制的容器 --- */
+        .explore-scroll-area {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            /* 使用auto高度让内容自然展开 */
+            height: auto;
+            display: flex;
+            justify-content: center;
+            padding: 120px 0 100px 0;
+            /* 留出页头页尾空间 */
+            /* 确保内容不被截断 */
+            overflow: visible;
+            /* 确保内容在最上层，不被背景覆盖 */
+            background: transparent;
+        }
+
+        .explore-content-grid {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+            /* 为右侧固定边栏留出空间 */
+            margin-right: 400px;
+        }
+
+        /* 左侧内容区：严禁使用 overflow:hidden */
+        .mechanic-list {
+            margin-left: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            /* 确保容器能容纳所有内容 */
+            height: auto;
+            overflow: visible;
+            /* 确保内容在最上层 */
+            position: relative;
+            z-index: 5;
+        }
+
+        .mechanic-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 40px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            /* 确保元素不会因为布局坍塌而不可见 */
+            min-height: 200px;
+            /* 强制设置初始透明度为1，确保所有卡片都可见 */
+            opacity: 1 !important;
+            /* 确保元素不会被遮挡 */
+            position: relative;
+            z-index: 1;
+        }
+
+        .mechanic-card:hover {
+            background: rgba(0, 242, 255, 0.08);
+            border-color: var(--c-blue);
+            transform: translateX(10px);
+        }
+
+        /* 右侧模拟器：使用 fixed 固定位置 */
+        .sticky-sidebar {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            width: 350px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--c-blue);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        h3 {
+            color: var(--c-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .key-hint {
+            border: 1px solid var(--c-blue);
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        /* 状态条 */
+        .status-row {
+            margin-bottom: 20px;
+        }
+
+        .bar-bg {
+            height: 4px;
+            background: #222;
+            margin-top: 8px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--c-blue);
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 900px) {
+            .explore-content-grid {
+                flex-direction: column;
+                margin-right: 0;
+            }
+
+            .sticky-sidebar {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-underlay">
+        <img src="assets/backfix.avif" style="opacity: 0.15;">
+    </div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <div class="logo">DOT <span>EXPLORE</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="worldview.html">世界观</a></li>
+                <li><a href="explore.html" style="color:var(--c-blue)">探索</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="explore-scroll-area">
+        <div class="explore-content-grid">
+
+            <div class="mechanic-list">
+                <div class="mechanic-card" onclick="updateUI('vision')">
+                    <h3><span class="key-hint">Q</span> 点阵视域</h3>
+                    <p>Neumann 观察世界的本质视角。在这个模式下，所有基于“康威生命游戏”逻辑构成的物体都会呈现出原始的蓝色网点状态。你可以借此发现隐藏在废墟墙壁后的控制台密码，或者预判不稳定的空间结构。
+                    </p>
+                </div>
+
+                <div class="mechanic-card" onclick="updateUI('dot')">
+                    <h3><span class="key-hint">E</span> 点阵化</h3>
+                    <p>将 Neumann
+                        的物理实体暂时转化为数据脉冲。这允许你穿过某些具有特定频率的能量屏障。但这是一种极其危险的行为，每秒都在消耗你的存在稳定性（Point值），一旦能量耗尽，你的原子结构将无法重组。</p>
+                </div>
+
+                <div class="mechanic-card" onclick="updateUI('hole')">
+                    <h3><span class="key-hint">!</span> 宇宙漏洞</h3>
+                    <p>宇宙模拟过程中的溢出错误。它们看起来像是深不见底的蓝黑色空洞，会不断吞噬周围的物质。如果你在没有开启点阵视域的情况下撞上它们，会造成不可逆的身体损伤（HP大幅扣除）。</p>
+                </div>
+
+                <div class="mechanic-card" onclick="updateUI('f646')">
+                    <h3><span class="key-hint">W/A/S/D</span> 推进导航</h3>
+                    <p>操作 F-646 小行星的推进器。在破碎的文明浮岛之间穿行时，你需要精细控制速度和角度。F-646 不仅仅是你的交通工具，更是你在虚空中的唯一避难所，记得时刻监控其燃料储备。</p>
+                </div>
+
+                <div class="mechanic-card" onclick="updateUI('default')">
+                    <h3><span class="key-hint">F</span> 交互采集</h3>
+                    <p>靠近古文明留下的遗物或石碑时，可以进行深度扫描。采集到的碎片信息可以在终端（Terminal）中进行解密，这通常是了解过去真相的唯一途径。</p>
+                </div>
+            </div>
+
+            <div class="sticky-sidebar">
+                <div style="font-size:10px; color:#555; margin-bottom:20px">SYSTEM DIAGNOSTIC</div>
+
+                <div class="status-row">
+                    <div style="display:flex; justify-content:space-between; font-size:12px">
+                        <span>POINT</span><span id="p-txt">4/4</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div id="p-bar" class="bar-fill"></div>
+                    </div>
+                </div>
+
+                <div class="status-row">
+                    <div style="display:flex; justify-content:space-between; font-size:12px">
+                        <span>STABILITY (HP)</span><span id="h-txt" style="color:#ff3e3e">3/3</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div id="h-bar" class="bar-fill" style="background:#ff3e3e"></div>
+                    </div>
+                </div>
+
+                <div id="console-log"
+                    style="font-family:monospace; font-size:11px; color:var(--c-blue); margin-top:30px; line-height:1.6">
+                    >> 终端已连接...<br>
+                    >> 正在读取位置数据...
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function updateUI(type) {
+            const log = document.getElementById('console-log');
+            const pBar = document.getElementById('p-bar');
+
+            if (type === 'dot') {
+                log.innerHTML = ">> 警告：点阵化进程中...<br>>> 存在性衰减检测中";
+                pBar.style.width = "50%";
+            } else if (type === 'hole') {
+                log.innerHTML = ">> 错误：检测到逻辑漏洞碰撞!<br>>> 正在紧急执行结构重组";
+                pBar.style.width = "25%";
+            } else {
+                log.innerHTML = ">> 系统状态：NOMINAL<br>>> 数据层同步完成";
+                pBar.style.width = "100%";
+            }
+        }
+
+        // 入场动画
+        gsap.from(".mechanic-card", {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            // 确保动画完成后元素完全可见
+            onComplete: function () {
+                gsap.set(".mechanic-card", { opacity: 1 });
+            }
+        });
+    </script>
+</body>
+
+</html>
