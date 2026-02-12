@@ -161,15 +161,13 @@ userInput.addEventListener('keypress', async (e) => {
         appendMessage('user', text);
         userInput.value = '';
 
-        // 模拟 AI 思考中
         const loadingMsg = appendMessage('system', '>> 正在请求核心数据层...');
 
         try {
-            const response = await fetch('https://ybcb67h0z3.sealosbja.site/chat', {
+            // 重要：改为 HTTPS 以防止预检重定向
+            const response = await fetch('https://dotexplore.2983150050.workers.dev/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [
                         { role: "system", content: KERNEL_PROMPT },
@@ -178,16 +176,17 @@ userInput.addEventListener('keypress', async (e) => {
                 })
             });
 
+            if (!response.ok) throw new Error('Network response was not ok');
+
             const data = await response.json();
             loadingMsg.remove();
 
-            // 智谱返回的结果在 choices[0].message.content
             if (data.choices && data.choices[0]) {
                 const reply = data.choices[0].message.content;
-                // 调用打字机效果显示回复
                 typeWriter(reply);
             }
         } catch (err) {
+            console.error(err);
             loadingMsg.innerText = '>> 错误：连接超时。物理规律似乎在坍塌。';
         }
     }
