@@ -17,7 +17,7 @@ gsap.to("#parallax-bg", {
 function getGreeting() {
     const now = new Date();
     const hour = now.getHours();
-    
+
     if (hour >= 5 && hour < 12) {
         return "早安";
     } else if (hour >= 12 && hour < 18) {
@@ -30,7 +30,7 @@ function getGreeting() {
 }
 
 // 页面加载时更新问候消息
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const greetingElement = document.getElementById('greeting-message');
     if (greetingElement) {
         const greeting = getGreeting();
@@ -40,12 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const charTL = gsap.timeline({ repeat: -1, yoyo: true });
 charTL.to("#char-main", {
-    y: -15,
+    y: 20,
     duration: 3,
     ease: "sine.inOut"
 })
     .to("#char-shadow", {
-        y: -10,      // 阴影上下移动幅度略小于主体
+        y: 10,      // 阴影上下移动幅度略小于主体
         x: 8,        // 阴影左右微动，保持在脚下附近
         scaleX: 1.05, // 模拟呼吸感
         duration: 3,
@@ -124,20 +124,30 @@ terminalNav.addEventListener('click', (e) => {
     e.preventDefault();
     terminalWindow.style.display = 'flex';
 
+    // 检测是否为移动设备
+    const isMobile = window.innerWidth <= 768;
+
     // 优化：在动画开始和结束时都尝试聚焦，确保万无一失
     gsap.fromTo(terminalWindow,
         { opacity: 0, scale: 0.9 },
         {
             opacity: 1,
-            scale: 1,
+            scale: isMobile ? 1 : 1,
             duration: 0.4,
             ease: "power2.out",
             onComplete: () => {
-                userInput.focus(); // 动画结束后正式聚焦
+                // 移动设备上不自动聚焦键盘，避免弹出键盘遮挡界面
+                if (!isMobile) {
+                    userInput.focus();
+                }
             }
         }
     );
-    userInput.focus(); // 动画开始瞬间也尝试聚焦
+
+    // 非移动设备上聚焦
+    if (!isMobile) {
+        userInput.focus();
+    }
 });
 
 closeBtn.addEventListener('click', () => {

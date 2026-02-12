@@ -502,11 +502,179 @@ h1:hover .outline {
 
 /* 适配移动端 */
 @media (max-width: 768px) {
+
+    /* 确保移动端可以正常滚动 */
+    body,
+    html {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 头部适配 */
+    header {
+        padding: 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+
+    nav a {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+
+    /* 隐藏整个主内容区域 */
+    .hero-content {
+        display: none;
+    }
+
+    h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .dot-accent {
+        display: none;
+    }
+
+    .outline {
+        font-size: 1.8rem !important;
+    }
+
+    .coord {
+        font-size: 10px;
+    }
+
+    /* 按钮适配 */
+    .cta-btn {
+        font-size: 14px;
+        padding: 12px 24px;
+        margin: 30px auto 0;
+        /* 增加触摸区域 */
+        min-height: 44px;
+        min-width: 120px;
+        /* 移动端触摸优化 */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    /* 角色容器适配 - 完全重写 */
+    .character-container {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+    }
+
+    .char-main {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        z-index: 2;
+        filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+    }
+
+    .char-shadow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        z-index: 1;
+        filter: blur(8px) opacity(0.3);
+    }
+
+    /* 液体效果适配 */
+    .liquid-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .blob {
+        transform: scale(0.7);
+    }
+
+    /* 终端适配 */
+    .terminal-overlay {
+        width: 90%;
+        max-width: 400px;
+        height: 70vh;
+        max-height: 500px;
+    }
+
+    .terminal-body {
+        font-size: 12px;
+    }
+
+    .terminal-input-line input {
+        font-size: 12px;
+    }
+
+    /* 页脚适配 */
     .site-footer {
         padding: 20px;
         flex-direction: column;
         gap: 10px;
         text-align: center;
+        font-size: 12px;
+    }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    .outline {
+        font-size: 1.5rem !important;
+    }
+
+    .character-container {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        bottom: -5vh;
+        left: 50%;
+        transform: translateX(-40%) scale(1.5);
+    }
+
+    .char-main {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        z-index: 2;
+        filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+    }
+
+    .char-shadow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        z-index: 1;
+        filter: blur(8px) opacity(0.3);
+    }
+
+    .terminal-overlay {
+        width: 95%;
+        height: 60vh;
     }
 }
 
