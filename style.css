@@ -251,6 +251,7 @@ nav a:hover::after {
 
 .title-wrapper {
     position: relative;
+    display: inline-block;
 }
 
 .subtitle {
@@ -394,6 +395,43 @@ h1:hover .outline {
 
 .cta-btn:hover .btn-glitch {
     left: 100%;
+}
+
+/* 密码显示样式 */
+.password-display {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: rgba(0, 5, 10, 0.9);
+    border: 1px solid var(--c-blue);
+    border-radius: 4px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 4;
+    box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2);
+}
+
+.password-label {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 5px;
+}
+
+.password-value {
+    color: var(--c-blue);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+}
+
+.cta-btn:hover + .password-display {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* 闪烁动画 */

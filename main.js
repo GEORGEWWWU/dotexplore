@@ -110,8 +110,11 @@ tl.fromTo('h1',
         ease: "power2.out"
     }, "-=0.4");
 
-
-
+// CTA按钮点击事件
+const ctaBtn = document.getElementById('cta-btn');
+ctaBtn.addEventListener('click', () => {
+    window.open('https://georgewwwu.lanzouw.com/b0066s637i', '_blank');
+});
 
 const terminalNav = document.querySelector('nav ul li:nth-child(3) a'); // 获取 TERMINAL 链接
 const terminalWindow = document.getElementById('terminal-window');
